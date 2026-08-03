@@ -1,0 +1,3 @@
+src/uniplot.egg-info/*
+dist/*
+.python-version

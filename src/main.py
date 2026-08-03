@@ -122,15 +122,15 @@ class Uniplot():
 if __name__ == '__main__':
     x = np.linspace(0, np.pi, 100)
 
-    # iax = Uniplot(figsize=(8, 4.5))
-    # iax.plot(x, np.sin(x), linewidth=2, color="C1", label="sin")
-    # iax.axhline(0, color="r", linestyle="--")
-    # iax.savefig("img.png")
-    # plt.close()
+    iax = Uniplot(figsize=(8, 4.5))
+    iax.plot(x, np.sin(x), linewidth=2, color="C1", label="sin")
+    iax.axhline(0, color="r", linestyle="--")
+    iax.savefig("img.png")
+    plt.close()
 
     iax = Uniplot.from_png("img.png", figsize=(4.5, 8))
-    # iax.plot(x, np.cos(x), color="C2", label="cos")
-    iax.show_labels("img_labels.png")
+    iax.plot(x, np.cos(x), color="C2", label="cos")
+    # iax.show_labels("img_labels.png")
 
     iax.update_curve(0, color="k", linestyle=":")
     iax.delete_curve(1)

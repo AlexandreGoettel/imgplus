@@ -1,0 +1,11 @@
+[project]
+name = "uniplot"
+version = "0.1.0"
+description = "Self-regenerating editable plots."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "matplotlib>=3.11.1",
+    "numpy>=2.5.1",
+    "pre-commit>=4.6.1",
+]
