@@ -13,38 +13,39 @@ def savefig(metadata_str: str, filename: str) -> None:
     _, ext = os.path.splitext(filename)
     if ext not in VALID_EXTENSIONS:
         raise NotImplementedError(f"'{ext}' is not supported, must be in {VALID_EXTENSIONS}")
+
+    if ext == ".eps":
+        key = "Creator"
+    else:
+        key = "metadata"
+
     plt.savefig(
         filename,
-        metadata={"metadata": metadata_str},
+        metadata={key: metadata_str},
     )
 
 
 def from_png(filename: str) -> dict:
-    """Load a Uniplot from a PNG file with embedded metadata."""
+    """Load Uniplot metadata from a PNG file."""
     img = Image.open(filename)
-    data = json.loads(img.text["metadata"])
-    return data
+    return json.loads(img.text["metadata"])
     # TODO: could add fig_kwargs to metadata, but maybe not really important?
 
 
 def from_pdf(filename: str) -> dict:
-    """Load a Uniplot from a PDF file."""
+    """Load Uniplot metadata from a PDF file."""
     reader = PdfReader(filename)
-    metadata = reader.metadata["/metadata"]
-    return json.loads(metadata)
+    metadata_str = reader.metadata["/metadata"]
+    return json.loads(metadata_str)
 
 
-# --- EPS ---
-# def to_eps(uniplot, filename):
-#     """Save a Uniplot to an EPS file. (skeleton)"""
-#     _, ext = os.path.splitext(filename)
-#     if ext != ".eps":
-#         raise NotImplementedError(f"Only .eps is supported by this function, not '{ext}'")
-#     # TODO: Implement EPS metadata embedding
-#     plt.savefig(filename)
-
-
-def from_eps(filename, **fig_kwargs):
-    """Load a Uniplot from an EPS file. (skeleton)"""
-    # TODO: Implement EPS metadata reading
-    raise NotImplementedError("EPS loading not yet implemented")
+def from_eps(filename: str) -> dict:
+    """Load Uniplot metadata from an EPS file."""
+    with open(filename, "r", encoding="utf-8") as f:
+        for line in f.readlines():
+            if "Creator" in line:
+                metadata_str = line[11:]
+                break
+        else:
+            raise ValueError("Could not find UniPlot metadata in file.")
+    return json.loads(metadata_str)
