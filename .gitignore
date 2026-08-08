@@ -1,3 +1,8 @@
 src/uniplot.egg-info/*
+src/uniplot/__pycache__/*
+tests/__pycache__/*
 dist/*
 .python-version
+*.png
+*.pdf
+*.eps

@@ -2,12 +2,12 @@
 import os
 import numpy as np
 from matplotlib import pyplot as plt
-from PIL import Image
-from PIL.PngImagePlugin import PngInfo
 import json
 
+import uniplot.io as io
 
-class Uniplot():
+
+class Uniplot:
 
     def __init__(self, data=None, **fig_kwargs):
         self.fig_kwargs = fig_kwargs
@@ -20,11 +20,39 @@ class Uniplot():
             self.ax = self.regenerate_ax(**fig_kwargs)
 
     @classmethod
-    def from_png(cls, filename, **fig_kwargs):
-        img = Image.open(filename)
-        data = json.loads(img.text["metadata"])
-        # TODO: could add fig_kwargs to metadata, but maybe not really important?
+    def from_file(cls, filename, **fig_kwargs):
+        """Load a Uniplot from a file. Dispatches based on file extension."""
+        _, ext = os.path.splitext(filename)
+        # MAINT: Could us importlib to auto check
+        if ext == ".png":
+            func = io.from_png
+        elif ext == ".pdf":
+            func = io.from_pdf
+        elif ext == ".eps":
+            func = io.from_eps
+        else:
+            raise NotImplementedError(f"Unsupported file format: '{ext}'")
+
+        data = func(filename)
         return cls(data, **fig_kwargs)
+
+    def savefig(self, filename):
+        """Save the plot to a file. Dispatches based on file extension."""
+        _, ext = os.path.splitext(filename)
+        if ext == ".png":
+            func = io.to_png
+        elif ext == ".pdf":
+            func = io.to_pdf
+        elif ext == ".eps":
+            func = io.to_eps
+        else:
+            raise NotImplementedError(f"Unsupported file format: '{ext}'")
+
+        func(self.metadata, filename)
+
+    @property
+    def metadata(self):
+        return json.dumps(self.data)
 
     @staticmethod
     def serialise(*args):
@@ -62,20 +90,6 @@ class Uniplot():
             return inner
         else:
             raise AttributeError
-
-    def savefig(self, filename):
-        _, ext = os.path.splitext(filename)
-        if ext != ".png":
-            raise NotImplemented(f"Only .png is supported for now, not '{ext}'")
-
-        metadata_str = json.dumps(self.data)
-        pnginfo = PngInfo()
-        pnginfo.add_text(key="metadata", value=metadata_str)
-
-        # Save with plt, then re-open to overwrite with metadata
-        plt.savefig(filename)
-        img = Image.open(filename)
-        img.save(filename, pnginfo=pnginfo)
 
     def iter_curves(self):
         for k, v in self.data.items():
@@ -116,25 +130,3 @@ class Uniplot():
         """Delete curve at position idx, then regenerate ax."""
         del self.data[idx]
         self.regenerate_ax()
-
-
-# Testing
-if __name__ == '__main__':
-    x = np.linspace(0, np.pi, 100)
-
-    iax = Uniplot(figsize=(8, 4.5))
-    iax.plot(x, np.sin(x), linewidth=2, color="C1", label="sin")
-    iax.axhline(0, color="r", linestyle="--")
-    iax.savefig("img.png")
-    plt.close()
-
-    iax = Uniplot.from_png("img.png", figsize=(4.5, 8))
-    iax.plot(x, np.cos(x), color="C2", label="cos")
-    # iax.show_labels("img_labels.png")
-
-    iax.update_curve(0, color="k", linestyle=":")
-    iax.delete_curve(1)
-    plt.show()
-
-    # Todo: imshow
-    # Todo: pdf, eps
