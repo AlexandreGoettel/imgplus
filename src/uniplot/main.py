@@ -37,18 +37,8 @@ class Uniplot:
         return cls(data, **fig_kwargs)
 
     def savefig(self, filename):
-        """Save the plot to a file. Dispatches based on file extension."""
-        _, ext = os.path.splitext(filename)
-        if ext == ".png":
-            func = io.to_png
-        elif ext == ".pdf":
-            func = io.to_pdf
-        elif ext == ".eps":
-            func = io.to_eps
-        else:
-            raise NotImplementedError(f"Unsupported file format: '{ext}'")
-
-        func(self.metadata, filename)
+        """Wrap plt.savefig to correctly handle metadata."""
+        io.savefig(self.metadata, filename)
 
     @property
     def metadata(self):
