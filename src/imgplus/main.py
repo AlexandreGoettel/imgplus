@@ -40,6 +40,7 @@ class Imgplus:
 
     def savefig(self, filename):
         """Wrap plt.savefig to correctly handle metadata."""
+        self.regenerate_ax()
         io.savefig(self.metadata, filename)
 
     @property
