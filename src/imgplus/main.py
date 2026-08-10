@@ -1,8 +1,8 @@
 """Read/Write scientific plots with the means to regenerate themselves."""
 import os
+import json
 import numpy as np
 from matplotlib import pyplot as plt
-import json
 
 import imgplus.io as io
 
@@ -129,3 +129,7 @@ class Imgplus:
         """Delete curve at position idx, then regenerate ax."""
         del self.data[idx]
         self.regenerate_ax()
+
+    def imshow(self, *args, **kwargs):
+        """Plot matrices. Not yet implemented."""
+        raise NotImplementedError("imshow is not yet supported")
