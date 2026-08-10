@@ -49,3 +49,4 @@ iax.savefig("my_plot_updated.png")
 
 - [ ] Add file size check to prevent embedding metadata in excessively large files
 - [ ] Add support for `imshow` and `colorbar`
+- [ ] Fix warning when using savefig with PDF
