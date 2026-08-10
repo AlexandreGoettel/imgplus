@@ -1,4 +1,4 @@
-"""I/O functions for Uniplot file formats."""
+"""I/O functions for Imgplus file formats."""
 import os
 import json
 from PIL import Image
@@ -26,26 +26,26 @@ def savefig(metadata_str: str, filename: str) -> None:
 
 
 def from_png(filename: str) -> dict:
-    """Load Uniplot metadata from a PNG file."""
+    """Load Imgplus metadata from a PNG file."""
     img = Image.open(filename)
     return json.loads(img.text["metadata"])
     # TODO: could add fig_kwargs to metadata, but maybe not really important?
 
 
 def from_pdf(filename: str) -> dict:
-    """Load Uniplot metadata from a PDF file."""
+    """Load Imgplus metadata from a PDF file."""
     reader = PdfReader(filename)
     metadata_str = reader.metadata["/metadata"]
     return json.loads(metadata_str)
 
 
 def from_eps(filename: str) -> dict:
-    """Load Uniplot metadata from an EPS file."""
+    """Load Imgplus metadata from an EPS file."""
     with open(filename, "r", encoding="utf-8") as f:
         for line in f.readlines():
             if "Creator" in line:
                 metadata_str = line[11:]
                 break
         else:
-            raise ValueError("Could not find UniPlot metadata in file.")
+            raise ValueError("Could not find Imgplus metadata in file.")
     return json.loads(metadata_str)

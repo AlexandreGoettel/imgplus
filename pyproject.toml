@@ -1,6 +1,6 @@
 [project]
-name = "uniplot"
-version = "0.1.1"
+name = "imgplus"
+version = "0.1.0"
 description = "Self-regenerating editable plots."
 authors = [
     {name = "Alexandre Göttel", email = "alexgoettel@live.de"},
@@ -23,4 +23,8 @@ build-backend = "uv_build"
 dev = [
     "pre-commit>=4.6.1",
     "pytest>=8.0.0",
+    "twine>=7.0.0",
 ]
+
+[project.urls]
+Repository = "https://github.com/AlexandreGoettel/imgplus"

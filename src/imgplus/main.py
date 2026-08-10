@@ -4,10 +4,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 import json
 
-import uniplot.io as io
+import imgplus.io as io
 
 
-class Uniplot:
+class Imgplus:
 
     def __init__(self, data=None, **fig_kwargs):
         self.fig_kwargs = fig_kwargs
@@ -21,7 +21,7 @@ class Uniplot:
 
     @classmethod
     def from_file(cls, filename, **fig_kwargs):
-        """Load a Uniplot from a file. Dispatches based on file extension."""
+        """Load a Imgplus from a file. Dispatches based on file extension."""
         _, ext = os.path.splitext(filename)
         # MAINT: Could us importlib to auto check
         if ext == ".png":
@@ -100,7 +100,7 @@ class Uniplot:
     def show_labels(self, filename):
         """
         Plot the saved image with all label indices and save to file.
-        This file is not a uniplot file, just a default plt.savefig.
+        This file is not a imgplus file, just a default plt.savefig.
         """
         plt.close()
         plt.figure(**self.fig_kwargs)

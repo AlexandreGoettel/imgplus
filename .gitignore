@@ -1,5 +1,5 @@
-src/uniplot.egg-info/*
-src/uniplot/__pycache__/*
+src/imgplus.egg-info/*
+src/imgplus/__pycache__/*
 tests/__pycache__/*
 dist/*
 .python-version
