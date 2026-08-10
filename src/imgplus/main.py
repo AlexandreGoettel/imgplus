@@ -134,3 +134,7 @@ class Imgplus:
     def imshow(self, *args, **kwargs):
         """Plot matrices. Not yet implemented."""
         raise NotImplementedError("imshow is not yet supported")
+
+    def hist(self, *args, **kwargs):
+        """Plot a histogram. Not yet implemented."""
+        raise NotImplementedError("hist is not yet supported")
