@@ -37,7 +37,7 @@ def test_load(extension):
 
 @pytest.mark.parametrize("extension", VALID_EXTENSIONS)
 def test_update_curve(extension):
-    """Updating a curve changes its properties."""
+    """Update a curve's pyplot kwargs."""
     tmpdir, filepath = _make_plot(extension)
     try:
         iax = Imgplus.from_file(filepath)
@@ -50,7 +50,7 @@ def test_update_curve(extension):
 
 @pytest.mark.parametrize("extension", VALID_EXTENSIONS)
 def test_delete_curve(extension):
-    """Deleting a curve removes it from data."""
+    """Delete a curve."""
     tmpdir, filepath = _make_plot(extension)
     k = 0
     try:
@@ -59,3 +59,11 @@ def test_delete_curve(extension):
         assert k not in iax.data
     finally:
         shutil.rmtree(tmpdir, ignore_errors=True)
+
+
+@pytest.mark.parametrize("extension", VALID_EXTENSIONS)
+def test_show_labels(extension):
+    tmpdir, filepath = _make_plot(extension)
+    iax = Imgplus.from_file(filepath)
+    iax.set_xlabel("Test")
+    iax.show_labels(os.path.join(tmpdir, f"labels{extension}"))

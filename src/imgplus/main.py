@@ -117,7 +117,10 @@ class Imgplus:
         ax = plt.subplot(111)
         for i, [func, *args, kwargs] in self.iter_curves():
             kwargs.update({"label": i})
-            getattr(ax, func)(*args, **kwargs)
+            try:
+                getattr(ax, func)(*args, **kwargs)
+            except TypeError:  # func does not support label
+                pass
         ax.legend()
         plt.savefig(filename)
 
