@@ -14,7 +14,7 @@ def savefig(metadata_str: str, filename: str) -> None:
     if ext not in VALID_EXTENSIONS:
         raise NotImplementedError(f"'{ext}' is not supported, must be in {VALID_EXTENSIONS}")
 
-    if ext == ".eps":
+    if ext in (".eps", ".pdf"):
         key = "Creator"
     else:
         key = "metadata"
@@ -35,7 +35,7 @@ def from_png(filename: str) -> dict:
 def from_pdf(filename: str) -> dict:
     """Load Imgplus metadata from a PDF file."""
     reader = PdfReader(filename)
-    metadata_str = reader.metadata["/metadata"]
+    metadata_str = reader.metadata["/Creator"]
     return json.loads(metadata_str)
 
 
