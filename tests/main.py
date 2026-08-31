@@ -18,7 +18,12 @@ def _make_plot(extension):
     iax = Imgplus(figsize=(8, 4.5))
     iax.plot(x, np.sin(x), linewidth=2, color="C1", label="sin")
     iax.axhline(0, color="r", linestyle="--")
-    assert iax.data["idx"] == 2
+
+    # Test histograms
+    y = np.random.random(size=100) * np.pi
+    iax.hist(y, bins=25, histtype="step")
+
+    assert iax.data["idx"] == 3
     iax.savefig(filepath)
     plt.close()
     return tmpdir, filepath
@@ -30,7 +35,7 @@ def test_load(extension):
     tmpdir, filepath = _make_plot(extension)
     try:
         iax = Imgplus.from_file(filepath, figsize=(4.5, 8))
-        assert iax.data["idx"] == 2
+        assert iax.data["idx"] == 3
     finally:
         shutil.rmtree(tmpdir, ignore_errors=True)
 
