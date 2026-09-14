@@ -51,3 +51,4 @@ iax.savefig("my_plot_updated.png")
 - [ ] Add support for `imshow` and `colorbar`
 - [x] Fix warning when using savefig with PDF
 - [ ] Add compression for histograms
+- [ ] Add support for gridspec
